@@ -6,6 +6,7 @@ contract Tutoria {
     address alumno;
     
     constructor (string mater, address idProf) public{
+        require(alum != idProf);
         materia = mater;
         idProfesor = idProf;
         alumno = msg.sender;
