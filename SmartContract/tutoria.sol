@@ -38,6 +38,7 @@ contract Tutoria {
     function confirmar(address key) public returns (bool) {
         require(Tutorias[key].idProfesor == msg.sender);
         require(Tutorias[key].isConfirmado == false);
+        require(Tutorias[key].isCancelado == false);
         return Tutorias[key].isConfirmado = true;
     }
     
