@@ -1,9 +1,10 @@
 pragma solidity ^0.4.7;
 contract Tutoria {
     
-    mapping (address => tutoriaData)  Tutorias;
+    mapping (address => TutoriaData)  Tutorias;
     
-    struct tutoriaData {
+    
+    struct TutoriaData {
         string materia;
         address idProfesor;
         address alumno;
@@ -11,42 +12,44 @@ contract Tutoria {
         bool isCancelado;
     }
     
-    function pedir(string mater, address idProf, address alum) public{
+    function solicitar(string mater, address idProf, address alum) public{
+        TutoriaData t = Tutorias[msg.sender];
         require(alum != idProf);
-        materia = mater;
-        idProfesor = idProf;
-        alumno = alum;
-        isConfirmado = false;
-        isCancelado = false;
+        t.materia = mater;
+        t.idProfesor = idProf;
+        t.alumno = alum;
+        t.isConfirmado = false;
+        t.isCancelado = false;
+        
     }
     
     function getMateria() public returns (string) {
-        return materia;
+        return Tutorias[msg.sender].materia;
     }
     
     function getIdProfesor() public returns (address) {
-        return idProfesor;
+        return Tutorias[msg.sender].idProfesor;
     }
     
     function getAlumno() public returns (address) {
-        return alumno;
+        return Tutorias[msg.sender].alumno;
     }
     
     function confirmar() public returns (bool) {
-        require(idProfesor == msg.sender);
-        require(isConfirmado == false);
-        return isConfirmado = true;
+        require(Tutorias[msg.sender].idProfesor == msg.sender);
+        require(Tutorias[msg.sender].isConfirmado == false);
+        return Tutorias[msg.sender].isConfirmado = true;
     }
     
-    function cancelar() public returns (address) {
-        require(alum == msg.sender);
-        require(isConfirmado == false);
-        require(isCancelado = false);
-        return isCancelado = true;
+    function cancelar() public returns (bool) {
+        require(Tutorias[msg.sender].alumno == msg.sender);
+        require(Tutorias[msg.sender].isConfirmado == false);
+        require(Tutorias[msg.sender].isCancelado == false);
+        return Tutorias[msg.sender].isCancelado = true;
     }
     
     function estaConfirmado() public returns (bool){
-        return isConfirmado;
+        return Tutorias[msg.sender].isConfirmado;
     }
     
 }
