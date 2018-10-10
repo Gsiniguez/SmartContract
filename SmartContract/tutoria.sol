@@ -5,13 +5,15 @@ contract Tutoria {
     address idProfesor;
     address alumno;
     bool confirmarTut;
+    bool cancelarTut;
     
-    constructor (string mater, address idProf) public{
+    constructor (string mater, address idProf, address alum) public{
         require(alum != idProf);
         materia = mater;
         idProfesor = idProf;
-        alumno = msg.sender;
+        alumno = alum;
         confirmarTut = false;
+        cancelarTut = false;
     }
     
     function getMateria() public returns (string) {
@@ -28,11 +30,15 @@ contract Tutoria {
     
     function confirmar() public returns (bool) {
         require(idProfesor == msg.sender);
+        require(confirmarTut == false);
         return confirmarTut = true;
     }
     
     function cancelar() public returns (address) {
-        
+        require(alum == msg.sender);
+        require(confirmarTut == false);
+        require(cancelarTut = false);
+        return cancelarTut = true;
     }
     
     function estaConfirmado() public returns (bool){
