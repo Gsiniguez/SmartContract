@@ -12,12 +12,12 @@ contract Tutoria {
         bool isCancelado;
     }
     
-    function solicitar(string mater, address idProf, address alum) public{
+    function solicitar(string mater, address idProf) public{
+        require(msg.sender != idProf);
         TutoriaData t = Tutorias[msg.sender];
-        require(alum != idProf);
         t.materia = mater;
         t.idProfesor = idProf;
-        t.alumno = alum;
+        t.alumno = msg.sender;
         t.isConfirmado = false;
         t.isCancelado = false;
         
