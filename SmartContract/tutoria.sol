@@ -7,7 +7,7 @@ contract Tutoria {
     bool confirmarTut;
     bool cancelarTut;
     
-    constructor (string mater, address idProf, address alum) public{
+    function pedir(string mater, address idProf, address alum) public{
         require(alum != idProf);
         materia = mater;
         idProfesor = idProf;
