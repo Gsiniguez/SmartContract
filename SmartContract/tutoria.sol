@@ -23,33 +23,37 @@ contract Tutoria {
         
     }
     
-    function getMateria() public returns (string) {
-        return Tutorias[msg.sender].materia;
+    function getMateria(address key) public view returns (string) {
+        return Tutorias[key].materia;
     }
     
-    function getIdProfesor() public returns (address) {
-        return Tutorias[msg.sender].idProfesor;
+    function getIdProfesor(address key) public view returns (address) {
+        return Tutorias[key].idProfesor;
     }
     
-    function getAlumno() public returns (address) {
-        return Tutorias[msg.sender].alumno;
+    function getAlumno(address key) public view returns (address) {
+        return Tutorias[key].alumno;
     }
     
-    function confirmar() public returns (bool) {
-        require(Tutorias[msg.sender].idProfesor == msg.sender);
-        require(Tutorias[msg.sender].isConfirmado == false);
-        return Tutorias[msg.sender].isConfirmado = true;
+    function confirmar(address key) public returns (bool) {
+        require(Tutorias[key].idProfesor == msg.sender);
+        require(Tutorias[key].isConfirmado == false);
+        return Tutorias[key].isConfirmado = true;
     }
     
-    function cancelar() public returns (bool) {
-        require(Tutorias[msg.sender].alumno == msg.sender);
-        require(Tutorias[msg.sender].isConfirmado == false);
-        require(Tutorias[msg.sender].isCancelado == false);
-        return Tutorias[msg.sender].isCancelado = true;
+    function cancelar(address key) public returns (bool) {
+        require(Tutorias[key].alumno == msg.sender);
+        require(Tutorias[key].isConfirmado == false);
+        require(Tutorias[key].isCancelado == false);
+        return Tutorias[key].isCancelado = true;
     }
     
-    function estaConfirmado() public returns (bool){
-        return Tutorias[msg.sender].isConfirmado;
+    function estaConfirmado(address key) public view returns (bool){
+        return Tutorias[key].isConfirmado;
+    }
+    
+    function estaCancelado(address key) public view returns (bool){
+        return Tutorias[key].isCancelado;
     }
     
 }
