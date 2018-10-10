@@ -1,19 +1,23 @@
 pragma solidity ^0.4.7;
 contract Tutoria {
     
-    string materia;
-    address idProfesor;
-    address alumno;
-    bool confirmarTut;
-    bool cancelarTut;
+    
+    
+    struct tutoriaData {
+        string materia;
+        address idProfesor;
+        address alumno;
+        bool isConfirmado;
+        bool isCancelado;
+    }
     
     function pedir(string mater, address idProf, address alum) public{
         require(alum != idProf);
         materia = mater;
         idProfesor = idProf;
         alumno = alum;
-        confirmarTut = false;
-        cancelarTut = false;
+        isConfirmado = false;
+        isCancelado = false;
     }
     
     function getMateria() public returns (string) {
@@ -30,19 +34,19 @@ contract Tutoria {
     
     function confirmar() public returns (bool) {
         require(idProfesor == msg.sender);
-        require(confirmarTut == false);
-        return confirmarTut = true;
+        require(isConfirmado == false);
+        return isConfirmado = true;
     }
     
     function cancelar() public returns (address) {
         require(alum == msg.sender);
-        require(confirmarTut == false);
-        require(cancelarTut = false);
-        return cancelarTut = true;
+        require(isConfirmado == false);
+        require(isCancelado = false);
+        return isCancelado = true;
     }
     
     function estaConfirmado() public returns (bool){
-        return confirmarTut;
+        return isConfirmado;
     }
     
 }
