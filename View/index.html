@@ -25,9 +25,20 @@
   </div>
 </nav>
     <div class="jumbotron"  style="padding:40px;">
-      <h1>Hello, world!</h1>
-      <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+      <form action="/" method="post">
+
+        Address del SmartContract:<br>
+        <input type="text" id="address" name="address" value="">
+        <br>
+        Materia:<br>
+        <input type="text" id="materia" name="materia" value="">
+        <br>
+        Profesor:<br>
+        <input type="text" id="profesor" name="profesor" value="">
+        <br><br>
+        <input type="submit" value="Submit">
+      </form> 
+      <button onclick="click()"></button>
     </div>
   </div>
 </body>
