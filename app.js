@@ -23,12 +23,13 @@ app.get('/',function(req,res){
 });
 
 app.post('/',function(req,res){
+    let usuario = req.body.usuario;
     let materia = req.body.materia;
     let profesor = req.body.profesor;
     let address = req.body.address;
 
     myContract = new web3.eth.Contract(abiDefinition,address, {data:byteCode,gasPrice:'1000',gas:200000});
-    myContract.methods.solicitar(materia,profesor).send({from:'0xfd730bab2d10d2179aec947409e2f0c5d1ac5021',gas:200000});
+    myContract.methods.solicitar(materia,profesor).send({from:usuario,gas:200000});
 
 })
 
