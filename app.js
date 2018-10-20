@@ -13,9 +13,8 @@ let config = {
   addressContract: null
 };
 
-//Posts
+//POST Deploy
 app.post('/deploy', function (req, res) {
-  //Codigo
   TutoriaContract = new web3.eth.Contract(abiDefinition, { data: byteCode, address: '0000730bab2d10d2179aec947409e2f0c5d1ac5021', from: '0xfd730bab2d10d2179aec947409e2f0c5d1ac5021', gasPrice: '1000', gas: 6721975 });
   TutoriaContract.deploy({ data: byteCode }).send({ from: '0xfd730bab2d10d2179aec947409e2f0c5d1ac5021', gas: 6721975, gasPrice: '1000' }).then((e) => {
     config.addressContract = e.options.address;
@@ -23,11 +22,12 @@ app.post('/deploy', function (req, res) {
   });
 })
 
+//Render index.html
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/View/index.html');
   res.render()
 });
-
+//POST Solicitar
 app.post('/', function (req, res) {
   let usuario = req.body.usuario;
   let materia = req.body.materia;
@@ -40,11 +40,12 @@ app.post('/', function (req, res) {
   myContract.methods.solicitar(materia, profesor).send({ from: usuario, gas: 200000 });
 
 })
-
+//Render metodos.html
 app.get('/metodos', function (req, res) {
   res.sendFile(__dirname + '/View/metodos.html');
 })
 
+//POST METODOS
 app.post('/metodos', function (req, res) {
   let usuario = req.body.usuario;
   let metodo = req.body.metodo;
@@ -163,26 +164,6 @@ app.post('/metodos', function (req, res) {
       break;
   }
 })
-
-app.get('/getmateria', function (req, res) {
-
-  myContract.methods.getMateria('0xfd730bab2d10d2179aec947409e2f0c5d1ac5021').call().then(e => {
-    var respuesta = 'Materia: ';
-
-
-    for (let index = 0; index < e.length; index++) {
-      const a = e[index];
-      respuesta += a.toString();
-    }
-
-    res.send(respuesta);
-  });
-  //res.sendFile(__dirname + '/View/getmateria.html',{materia:mate});
-});
-
-app.get('/sitemap', function (req, res) {
-  res.sendFile('/sitemap.html');
-});
 
 // WEB3 y SOLC
 Web3 = require('web3');
