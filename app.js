@@ -32,7 +32,7 @@ app.post('/', function (req, res) {
   let usuario = req.body.usuario;
   let materia = req.body.materia;
   let profesor = req.body.profesor;
-  if(profesor == usuario){
+  if (profesor == usuario) {
     res.send("Usuario y Profesor no pueden ser el mismo.")
   }
 
@@ -48,6 +48,7 @@ app.get('/metodos', function (req, res) {
 //POST METODOS
 app.post('/metodos', function (req, res) {
   let usuario = req.body.usuario;
+  let profesor = req.body.profesor;
   let metodo = req.body.metodo;
   switch (metodo) {
     case "1":
@@ -107,30 +108,34 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "5":
-      myContract.methods.confirmar(usuario).call().then(e => {
+      myContract.methods.confirmar(usuario).send({from:profesor, gas: 200000}).then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
         }
-        var respuesta = 'RESPUESTA AL METODO confirmar(): ';
-        for (let index = 0; index < e.length; index++) {
-          const a = e[index];
-          respuesta += a.toString();
+        if(e == false){
+          var respuesta = 'RESPUESTA AL METODO confirmar(): CONFIRMADO :-)';
+        }
+        if(e == true){
+          var respuesta = 'RESPUESTA AL METODO confirmar(): Ya esta CONFIRMADO :-)';
         }
         res.send(respuesta);
       });
       break;
     case "6":
-      myContract.methods.cancelar(usuario).call().then(e => {
+      myContract.methods.cancelar(usuario).send({from:usuario, gas: 200000}).then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
         }
-        var respuesta = 'RESPUESTA AL METODO cancelar(): ';
-        for (let index = 0; index < e.length; index++) {
-          const a = e[index];
-          respuesta += a.toString();
+
+        if(e == false){
+          var respuesta = 'RESPUESTA AL METODO cancelar(): CANCELADO :-(';
         }
+        if(e == true){
+          var respuesta = 'RESPUESTA AL METODO cancelar(): Ya esta CANCELADO :-(';
+        }
+        
         res.send(respuesta);
       });
       break;
@@ -141,10 +146,9 @@ app.post('/metodos', function (req, res) {
           res.send('Usuario Invalido')
         }
         var respuesta = 'RESPUESTA AL METODO estaConfirmado(): ';
-        for (let index = 0; index < e.length; index++) {
-          const a = e[index];
-          respuesta += a.toString();
-        }
+
+        respuesta += e
+
         res.send(respuesta);
       });
       break;
@@ -155,10 +159,9 @@ app.post('/metodos', function (req, res) {
           res.send('Usuario Invalido')
         }
         var respuesta = 'RESPUESTA AL METODO estaCancelado(): ';
-        for (let index = 0; index < e.length; index++) {
-          const a = e[index];
-          respuesta += a.toString();
-        }
+
+        respuesta += e;
+
         res.send(respuesta);
       });
       break;
@@ -187,7 +190,7 @@ byteCode = compiledCode.contracts[':Tutoria'].bytecode //Su contrato inteligente
 
 
 
-app.listen(3001);
+app.listen(3002);
 
 console.log("Running at Port 3000");
 
