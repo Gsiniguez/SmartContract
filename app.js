@@ -108,34 +108,20 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "5":
-      myContract.methods.confirmar(usuario).send({from:profesor, gas: 200000}).then(e => {
-
+      myContract.methods.confirmar(usuario).send({ from: profesor, gas: 200000 }).then(e => {
         if (e.length < 1) {
           res.send('Usuario Invalido')
         }
-        if(e == false){
-          var respuesta = 'RESPUESTA AL METODO confirmar(): CONFIRMADO :-)';
-        }
-        if(e == true){
-          var respuesta = 'RESPUESTA AL METODO confirmar(): Ya esta CONFIRMADO :-)';
-        }
+        var respuesta = 'RESPUESTA AL METODO confirmar(): CONFIRMADO :-)';
         res.send(respuesta);
       });
       break;
     case "6":
-      myContract.methods.cancelar(usuario).send({from:usuario, gas: 200000}).then(e => {
-
+      myContract.methods.cancelar(usuario).send({ from: usuario, gas: 200000 }).then(e => {
         if (e.length < 1) {
           res.send('Usuario Invalido')
         }
-
-        if(e == false){
-          var respuesta = 'RESPUESTA AL METODO cancelar(): CANCELADO :-(';
-        }
-        if(e == true){
-          var respuesta = 'RESPUESTA AL METODO cancelar(): Ya esta CANCELADO :-(';
-        }
-        
+        var respuesta = 'RESPUESTA AL METODO cancelar(): CANCELADO :-(';
         res.send(respuesta);
       });
       break;
