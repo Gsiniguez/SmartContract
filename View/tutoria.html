@@ -16,25 +16,12 @@
           <li>
             <a href="/">Solicitar Tutoria</a>
           </li>
-          <li class="active">
-            <a href="/metodos">Metodos</a>
-          </li>
         </ul>
       </div>
     </nav>
     <div class="jumbotron" style="padding:40px;">
-      <form action="/metodos" method="POST">
-        Seleccionar Tutoria: <br>
-        <select name="tuto" id="tuto">
-            <option value="0">Tuto1</option>
-            <option value="1">Tuto2</option>
-            <option value="2">Tuto3</option>
-            <option value="3">Tuto4</option>
-            <option value="4">Tuto5</option>
-            <option value="5">Tuto6</option>
-            <option value="6">Tuto7</option>
-          </select>
-        <br><br> Usuario (Solo para Cancelar):<br>
+      <form action="/tutoria" method="POST">
+        Seleccionar Usuario para ver Tutorias:<br>
       <select name="usuario" id="usuario">
         <option value="0xfd730bab2d10d2179aec947409e2f0c5d1ac5021">Gonza</option>
         <option value="0x2af24ec65db90aa75fc9c918da71e498c6812efe">Jose</option>
@@ -47,29 +34,10 @@
         <option value="0xff7cbcb3bae4b13db50860a023e31f4a0b0bfa46">Agustin</option>
         <option value="0xbf965026809eeda78bd15e66ed185220fbc44c0b">Sebastian</option>
       </select>
-      <br>Profesor (Solo para Confimar):  <br>  
-      <select name="profesor" id="profesor">
-        <option value="0x2af24ec65db90aa75fc9c918da71e498c6812efe">Jose</option>
-        <option value="0xb84d66b9aa22c77cb82b756a64dba9e26719b4d7">Cristian</option>
-        <option value="0xbd7b59c5c01e860150200df323b703228625eff7">Sergio</option>
-        <option value="0xbd7b59c5c01e860150200df323b703228625eff7">Mela</option>
-      </select>
-      <br><br>Metodos:<br>
-      <select name="metodo" id="metodo">
-        <option value="1">PedirMateria</option>
-        <option value="2">Fecha de creacion de Solicitar</option>
-        <option value="3">PedirProfesor</option>
-        <option value="4">PedirAlumno</option>
-        <option value="5">Confirmar Tutoria (Profesor)</option>
-        <option value="6">Cancelar Tutoria (Alumno)</option>
-        <option value="7">EstaConfirmado?</option>
-        <option value="8">EstaCancelado?</option>
-      </select>
       <br><br>
-      <input type="submit" value="Ejecutar Metodo!">
+      <input type="submit" value="Ver Tutorias" href='/metodo'>
     </form>
     </div>
 </body>
-
 
 </html>

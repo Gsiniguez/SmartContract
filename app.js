@@ -10,13 +10,21 @@ app.set('view engine', 'html');
 
 
 let config = {
-  addressContract: null
+  addressContract: null,
+  tutos:[]
 };
+
+
+let tutoActual = {
+  tuto:[]
+}
+
+
 
 //POST Deploy
 app.post('/deploy', function (req, res) {
-  TutoriaContract = new web3.eth.Contract(abiDefinition, { data: byteCode, address: '0000730bab2d10d2179aec947409e2f0c5d1ac5021', from: '0xfd730bab2d10d2179aec947409e2f0c5d1ac5021', gasPrice: '1000', gas: 6721975 });
-  TutoriaContract.deploy({ data: byteCode }).send({ from: '0xfd730bab2d10d2179aec947409e2f0c5d1ac5021', gas: 6721975, gasPrice: '1000' }).then((e) => {
+  TutoriaContract = new web3.eth.Contract(abiDefinition, { data: byteCode, from: web3.eth.accounts[0], gasPrice: '1000', gas: 6721975 });
+  TutoriaContract.deploy({ data: byteCode }).send({ from:'0xfd730bab2d10d2179aec947409e2f0c5d1ac5021', gas: 6721975, gasPrice: '1000' }).then((e) => {
     config.addressContract = e.options.address;
     res.redirect('/');
   });
@@ -37,12 +45,33 @@ app.post('/', function (req, res) {
   }
 
   myContract = new web3.eth.Contract(abiDefinition, config.addressContract, { data: byteCode, gasPrice: '1000', gas: 200000 });
-  myContract.methods.solicitar(materia, profesor).send({ from: usuario, gas: 200000 });
-
+  myContract.methods.solicitar(materia, profesor)
+  .send({ from: usuario, gas: 200000 })
+  myContract.methods.solicitar(materia,profesor)
+  .call({from:usuario})
+  .then(e => {
+    console.log(e)
+    config.tutos.push({'usuario':usuario,'key':e})
+  })
 })
 //Render metodos.html
 app.get('/metodos', function (req, res) {
-  res.sendFile(__dirname + '/View/metodos.html');
+  res.sendFile(__dirname + '/View/metodos.html'); 
+})
+
+app.get('/tutoria', function (req, res) {
+  res.sendFile(__dirname + '/View/tutoria.html');
+})
+
+app.post('/tutoria', function(req,res){
+  let usuario = req.body.usuario;
+  tutoActual.tuto = []
+  for (let x in config.tutos){
+    if (usuario == config.tutos[x].usuario){
+      tutoActual.tuto.push(config.tutos[x].key)
+    }
+  }
+  res.redirect('/metodos')
 })
 
 //POST METODOS
@@ -50,9 +79,10 @@ app.post('/metodos', function (req, res) {
   let usuario = req.body.usuario;
   let profesor = req.body.profesor;
   let metodo = req.body.metodo;
+  let tuto = req.body.tuto;
   switch (metodo) {
     case "1":
-      myContract.methods.getMateria(usuario).call().then(e => {
+      myContract.methods.getMateria(tutoActual.tuto[tuto]).call().then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
@@ -66,7 +96,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "2":
-      myContract.methods.getFecha(usuario).call().then(e => {
+      myContract.methods.getFecha(tutoActual.tuto[tuto]).call().then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
@@ -80,7 +110,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "3":
-      myContract.methods.getIdProfesor(usuario).call().then(e => {
+      myContract.methods.getIdProfesor(tutoActual.tuto[tuto]).call().then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
@@ -94,7 +124,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "4":
-      myContract.methods.getAlumno(usuario).call().then(e => {
+      myContract.methods.getAlumno(tutoActual.tuto[tuto]).call().then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
@@ -108,7 +138,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "5":
-      myContract.methods.confirmar(usuario).send({ from: profesor, gas: 200000 }).then(e => {
+      myContract.methods.confirmar(tutoActual.tuto[tuto]).send({ from: profesor, gas: 200000 }).then(e => {
         if (e.length < 1) {
           res.send('Usuario Invalido')
         }
@@ -117,7 +147,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "6":
-      myContract.methods.cancelar(usuario).send({ from: usuario, gas: 200000 }).then(e => {
+      myContract.methods.cancelar(tutoActual.tuto[tuto]).send({ from: usuario, gas: 200000 }).then(e => {
         if (e.length < 1) {
           res.send('Usuario Invalido')
         }
@@ -126,7 +156,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "7":
-      myContract.methods.estaConfirmado(usuario).call().then(e => {
+      myContract.methods.estaConfirmado(tutoActual.tuto[tuto]).call().then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
@@ -139,7 +169,7 @@ app.post('/metodos', function (req, res) {
       });
       break;
     case "8":
-      myContract.methods.estaCancelado(usuario).call().then(e => {
+      myContract.methods.estaCancelado(tutoActual.tuto[tuto]).call().then(e => {
 
         if (e.length < 1) {
           res.send('Usuario Invalido')
@@ -176,9 +206,9 @@ byteCode = compiledCode.contracts[':Tutoria'].bytecode //Su contrato inteligente
 
 
 
-app.listen(3002);
+app.listen(3005);
 
-console.log("Running at Port 3000");
+console.log("Running at Port 3005");
 
 
 
